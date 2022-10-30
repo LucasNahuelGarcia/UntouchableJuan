@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -10,7 +11,6 @@ public class PunchingSystem : MonoBehaviour
 
     public GameObject LeftTarget;
     public GameObject LeftReadyPosition;
-    public FOD
     public GameObject RightTarget;
     public GameObject RightReadyPosition;
     public GameObject MainCamera;
@@ -23,9 +23,11 @@ public class PunchingSystem : MonoBehaviour
     public float animationSpeed = .2f;
     public float timeAfterPunchInSeconds = .2f;
     private bool punching = false;
+    private FMOD.Studio.EventInstance FMODEventInstance;
 
     void Start()
     {
+        FMODEventInstance = FMODUnity.RuntimeManager.CreateInstance("event:/Hitting");
         MainCamera = MainCamera ?? Camera.main.gameObject;
         disablePunchingColliders();
         setArmsReady();
@@ -47,8 +49,6 @@ public class PunchingSystem : MonoBehaviour
     {
         Vector3 camPosition = MainCamera.transform.position;
         Vector3 camForward = MainCamera.transform.forward;
-
-        Debug.DrawLine(camPosition, camPosition + camForward * maxDIstanceRayCast, Color.green, 23f);
 
         RaycastHit[] hit = Physics.RaycastAll(camPosition, camForward, maxDIstanceRayCast);
         foreach (RaycastHit hitInfo in hit)
@@ -75,12 +75,12 @@ public class PunchingSystem : MonoBehaviour
 
     private void enablePunchingColliders()
     {
-        foreach(Collider col in punchingColliders)
+        foreach (Collider col in punchingColliders)
             col.enabled = true;
     }
     private void disablePunchingColliders()
     {
-        foreach(Collider col in punchingColliders)
+        foreach (Collider col in punchingColliders)
             col.enabled = false;
     }
 
@@ -110,9 +110,10 @@ public class PunchingSystem : MonoBehaviour
         while (colisionParent.transform.parent != null)
             colisionParent = colisionParent.transform.parent.gameObject;
 
-        Debug.Log("Hitting");
         if (colisionParent.CompareTag("Enemy"))
         {
+            FMODEventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(col.contacts[0].point));
+            FMODEventInstance.start();
             Debug.Log("Hitting enemy");
             colisionParent.GetComponent<Enemy>().kill();
             col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * 200, col.contacts[0].point, ForceMode.Impulse);
@@ -123,6 +124,5 @@ public class PunchingSystem : MonoBehaviour
     {
         LeftTarget.transform.position = LeftReadyPosition.transform.position;
         RightTarget.transform.position = RightReadyPosition.transform.position;
-
     }
 }
