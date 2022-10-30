@@ -7,9 +7,12 @@ public class Enemy : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
     Animator animator;
+    private FMOD.Studio.EventInstance EnemyFallingEvent;
+    private bool isDead = false;
 
     void Start()
     {
+        EnemyFallingEvent = FMODUnity.RuntimeManager.CreateInstance("event:/EnemyDieing");
         navMeshAgent = this.GetComponent<NavMeshAgent>();
         animator = this.GetComponent<Animator>();
         setupRigidbodies();
@@ -31,6 +34,7 @@ public class Enemy : MonoBehaviour
     [ContextMenu("Kill")]
     public void kill()
     {
+        isDead = true;
         this.GetComponent<Animator>().enabled = false;
         this.GetComponent<NavMeshAgent>().enabled = false;
         Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -39,5 +43,12 @@ public class Enemy : MonoBehaviour
             rigidbody.isKinematic = false;
             rigidbody.velocity = Vector3.zero;
         }
+
+        EnemyFallingEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(this.transform.position));
+        EnemyFallingEvent.start();
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
     }
 }
