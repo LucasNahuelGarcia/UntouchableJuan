@@ -10,42 +10,48 @@ public class PunchingSystem : MonoBehaviour
 
     public GameObject LeftTarget;
     public GameObject LeftReadyPosition;
+    public FOD
     public GameObject RightTarget;
     public GameObject RightReadyPosition;
     public GameObject MainCamera;
+    [NonReorderable]
+    public Collider[] punchingColliders;
+    public AudioSource rightHandPunchAudioSource;
+    public AudioSource LeftHandPunchAudioSource;
     public float maxDIstanceRayCast;
     [Range(0.00001f, 0.00203f)]
     public float animationSpeed = .2f;
     public float timeAfterPunchInSeconds = .2f;
+    private bool punching = false;
 
     void Start()
     {
         MainCamera = MainCamera ?? Camera.main.gameObject;
+        disablePunchingColliders();
         setArmsReady();
-    }
-
-    void Update()
-    {
-
     }
 
     public void OnFireL(InputValue value)
     {
-        tryToHit(LeftTarget, LeftReadyPosition);
+        if (!punching)
+            tryToHit(LeftTarget, LeftReadyPosition);
     }
 
     public void OnFireR(InputValue value)
     {
-        tryToHit(RightTarget, RightReadyPosition);
+        if (!punching)
+            tryToHit(RightTarget, RightReadyPosition);
     }
 
     private void tryToHit(GameObject target, GameObject targetReadyPosition)
     {
         Vector3 camPosition = MainCamera.transform.position;
         Vector3 camForward = MainCamera.transform.forward;
-        RaycastHit hitInfo;
 
-        if (Physics.Raycast(camPosition, camForward, out hitInfo, maxDIstanceRayCast))
+        Debug.DrawLine(camPosition, camPosition + camForward * maxDIstanceRayCast, Color.green, 23f);
+
+        RaycastHit[] hit = Physics.RaycastAll(camPosition, camForward, maxDIstanceRayCast);
+        foreach (RaycastHit hitInfo in hit)
         {
             StartCoroutine(animatePunch(target, hitInfo.point, targetReadyPosition.transform));
         }
@@ -53,9 +59,29 @@ public class PunchingSystem : MonoBehaviour
 
     IEnumerator animatePunch(GameObject animatedObj, Vector3 endPosition, Transform readyPosition)
     {
+        this.punching = true;
+
+        enablePunchingColliders();
+
         yield return animateMovement(animatedObj, endPosition);
         // yield return animateMovement(animatedObj, readyPosition.position);
+        disablePunchingColliders();
+        yield return new WaitForSeconds(timeAfterPunchInSeconds);
         animatedObj.transform.position = readyPosition.position;
+
+
+        this.punching = false;
+    }
+
+    private void enablePunchingColliders()
+    {
+        foreach(Collider col in punchingColliders)
+            col.enabled = true;
+    }
+    private void disablePunchingColliders()
+    {
+        foreach(Collider col in punchingColliders)
+            col.enabled = false;
     }
 
     IEnumerator animateMovement(GameObject animatedObj, Vector3 endPosition)
@@ -73,10 +99,9 @@ public class PunchingSystem : MonoBehaviour
 
             animatedObj.transform.position = actualPosition;
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         animatedObj.transform.position = endPosition;
-        yield return new WaitForSeconds(timeAfterPunchInSeconds);
     }
 
     void OnCollisionEnter(Collision col)
@@ -85,8 +110,10 @@ public class PunchingSystem : MonoBehaviour
         while (colisionParent.transform.parent != null)
             colisionParent = colisionParent.transform.parent.gameObject;
 
+        Debug.Log("Hitting");
         if (colisionParent.CompareTag("Enemy"))
         {
+            Debug.Log("Hitting enemy");
             colisionParent.GetComponent<Enemy>().kill();
             col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * 200, col.contacts[0].point, ForceMode.Impulse);
         }
