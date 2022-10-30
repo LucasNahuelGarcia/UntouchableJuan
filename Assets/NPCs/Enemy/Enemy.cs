@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
         navMeshAgent = this.GetComponent<NavMeshAgent>();
         animator = this.GetComponent<Animator>();
         setupRigidbodies();
+        moveToFloor();
     }
     void FixedUpdate()
     {
@@ -23,6 +24,10 @@ public class Enemy : MonoBehaviour
             navMeshAgent.destination = Camera.main.transform.position;
 
         animator.SetFloat("Speed", this.navMeshAgent.velocity.magnitude);
+    }
+
+    private void moveToFloor() {
+        
     }
 
     private void setupRigidbodies()
