@@ -116,7 +116,7 @@ public class PunchingSystem : MonoBehaviour
             FMODEventInstance.start();
             Debug.Log("Hitting enemy");
             colisionParent.GetComponent<Enemy>().kill();
-            col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * 200, col.contacts[0].point, ForceMode.Impulse);
+            col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * 100, col.contacts[0].point, ForceMode.Impulse);
         }
     }
 

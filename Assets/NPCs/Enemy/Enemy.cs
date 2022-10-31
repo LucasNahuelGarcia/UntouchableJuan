@@ -18,6 +18,10 @@ public class Enemy : MonoBehaviour
         setupRigidbodies();
         moveToFloor();
     }
+    void Update()
+    {
+        animator.SetBool("Jumping", navMeshAgent.isOnOffMeshLink);
+    }
     void FixedUpdate()
     {
         if (navMeshAgent.enabled)
@@ -26,8 +30,9 @@ public class Enemy : MonoBehaviour
         animator.SetFloat("Speed", this.navMeshAgent.velocity.magnitude);
     }
 
-    private void moveToFloor() {
-        
+    private void moveToFloor()
+    {
+
     }
 
     private void setupRigidbodies()
@@ -51,6 +56,17 @@ public class Enemy : MonoBehaviour
 
         EnemyFallingEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(this.transform.position));
         EnemyFallingEvent.start();
+        StartCoroutine(changeLayer(0.2f));
+    }
+
+    IEnumerator changeLayer(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        gameObject.layer = 3;
+        foreach (Transform g in transform.GetComponentsInChildren<Transform>())
+        {
+            g.gameObject.layer = 3;
+        }
     }
 
     private void OnCollisionEnter(Collision other)

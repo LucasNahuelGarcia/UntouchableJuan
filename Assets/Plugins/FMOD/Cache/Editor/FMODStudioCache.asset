@@ -42,7 +42,7 @@ MonoBehaviour:
   Path: ../../FMOD Studio/HitingGame/superHittingGame/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638027064915846366
+  lastModified: 638027502676927079
   FileSizes:
   - Name: Desktop
     Value: 856
@@ -71,7 +71,7 @@ MonoBehaviour:
   - {fileID: 5549547004230424102}
   StringsBanks:
   - {fileID: -3170826105733627662}
-  cacheTime: 638027064915846366
+  cacheTime: 638027502676927079
   cacheVersion: 131593
 --- !u!114 &1045468221138557038
 MonoBehaviour:
@@ -95,7 +95,7 @@ MonoBehaviour:
   - {fileID: 5549547004230424102}
   IsStream: 0
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -115,10 +115,10 @@ MonoBehaviour:
   Path: ../../FMOD Studio/HitingGame/superHittingGame/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638027064915846366
+  lastModified: 638027502676927079
   FileSizes:
   - Name: Desktop
-    Value: 44064
+    Value: 321216
   Exists: 1
 --- !u!114 &6985169547580514421
 MonoBehaviour:
@@ -144,6 +144,6 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
-  MinDistance: 1
+  MinDistance: 2.2
   MaxDistance: 20
   Length: 0
