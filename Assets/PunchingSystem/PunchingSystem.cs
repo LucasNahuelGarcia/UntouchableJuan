@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
@@ -16,18 +15,15 @@ public class PunchingSystem : MonoBehaviour
     public GameObject MainCamera;
     [NonReorderable]
     public Collider[] punchingColliders;
-    public AudioSource rightHandPunchAudioSource;
-    public AudioSource LeftHandPunchAudioSource;
     public float maxDIstanceRayCast;
+    public float punchingForce = 100f;
     [Range(0.00001f, 0.00203f)]
     public float animationSpeed = .2f;
     public float timeAfterPunchInSeconds = .2f;
     private bool punching = false;
-    private FMOD.Studio.EventInstance FMODEventInstance;
 
     void Start()
     {
-        FMODEventInstance = FMODUnity.RuntimeManager.CreateInstance("event:/Hitting");
         MainCamera = MainCamera ?? Camera.main.gameObject;
         disablePunchingColliders();
         setArmsReady();
@@ -110,13 +106,18 @@ public class PunchingSystem : MonoBehaviour
         while (colisionParent.transform.parent != null)
             colisionParent = colisionParent.transform.parent.gameObject;
 
-        if (colisionParent.CompareTag("Enemy"))
+        if (punching && colisionParent.CompareTag("Enemy") )
         {
-            FMODEventInstance.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(col.contacts[0].point));
-            FMODEventInstance.start();
             Debug.Log("Hitting enemy");
-            colisionParent.GetComponent<Enemy>().kill();
-            col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * 100, col.contacts[0].point, ForceMode.Impulse);
+            colisionParent.GetComponent<Enemy>().Kill();
+            col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * punchingForce, col.contacts[0].point, ForceMode.Impulse);
+        }
+
+
+    }
+    private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.CompareTag("Fists")) {
+            GameManager.Instance.GameOver();
         }
     }
 
