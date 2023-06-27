@@ -43,8 +43,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: -0.0000000019299107, y: -0.024195101, z: 4.949498e-10}
+  m_Radius: 0.2
+  m_Center: {x: -0.01, y: -0.22, z: 4.949498e-10}
 --- !u!1 &635216405
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,8 +88,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: -0.0000000019299107, y: -0.024195101, z: 4.949498e-10}
+  m_Radius: 0.2
+  m_Center: {x: -0.01, y: -0.22, z: 4.949498e-10}
 --- !u!1 &1147175947064278330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,7 +1821,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8739349750652070310
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1838,7 +1838,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &919132149048168475
 MonoBehaviour:
   m_ObjectHideFlags: 0

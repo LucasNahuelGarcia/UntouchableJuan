@@ -10,6 +10,7 @@ namespace StarterAssets
         [Header("Character Input Values")]
         public Vector2 move;
         public Vector2 look;
+        [SerializeField] public bool dodge = false;
         public bool jump;
         public bool sprint;
 
@@ -39,6 +40,11 @@ namespace StarterAssets
             }
         }
 
+        public void OnDodge(InputValue value)
+        {
+            DodgeInput(value.isPressed);
+        }
+
         public void OnJump(InputValue value)
         {
             JumpInput(value.isPressed);
@@ -50,7 +56,10 @@ namespace StarterAssets
         }
 #endif
 
-
+        public void DodgeInput(bool newDodgeState)
+        {
+            dodge = newDodgeState;
+        }
         public void MoveInput(Vector2 newMoveDirection)
         {
             move = newMoveDirection;
