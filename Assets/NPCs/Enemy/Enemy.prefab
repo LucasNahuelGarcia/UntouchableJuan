@@ -1668,7 +1668,7 @@ SkinnedMeshRenderer:
     firstSubMesh: 0
     subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
+  m_ProbeAnchor: {fileID: 5382777529878206726}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
@@ -1852,6 +1852,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966c10074dd919f37b2a7c0ba987bf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!195 &5579593835180634062
 NavMeshAgent:
   m_ObjectHideFlags: 0
