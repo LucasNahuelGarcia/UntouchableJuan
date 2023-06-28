@@ -3,11 +3,13 @@ using UnityEngine;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
+using UnityEngine.Timeline;
 #endif
 
 public class PunchingSystem : MonoBehaviour
 {
-
+    public AudioSource AudioSource;
+    public AudioClip[] PunchSounds;
     public GameObject LeftTarget;
     public GameObject LeftReadyPosition;
     public GameObject RightTarget;
@@ -91,12 +93,9 @@ public class PunchingSystem : MonoBehaviour
     {
         Vector3 originalPosition = animatedObj.transform.position;
         float progressPorcentile = 0f;
-        //float distance = Vector3.Distance(animatedObj.transform.position, endPosition);
-        //float startTime = Time.time;
 
         while (progressPorcentile < .999f)
         {
-            Debug.Log($"Progress: ${progressPorcentile}");
             float acceleration = accelerationCurve.Evaluate(progressPorcentile) + 0.1f;
             progressPorcentile += targetSpeed * Time.deltaTime * acceleration;
             progressPorcentile = Mathf.Clamp(progressPorcentile, 0f, 1f);
@@ -113,18 +112,34 @@ public class PunchingSystem : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
         GameObject colisionParent = col.gameObject;
-        while (colisionParent.transform.parent != null)
-            colisionParent = colisionParent.transform.parent.gameObject;
+        colisionParent = FindParent(colisionParent);
 
         if (punching && colisionParent.CompareTag("Enemy"))
         {
-            Debug.Log("Hitting enemy");
-            colisionParent.GetComponent<Enemy>().Kill();
-            col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * PunchForce, col.contacts[0].point, ForceMode.Impulse);
+            KnockEnemy(col, colisionParent);
+            PlayPunchSound();
         }
-
-
     }
+
+    private static GameObject FindParent(GameObject colisionParent)
+    {
+        while (colisionParent.transform.parent != null)
+            colisionParent = colisionParent.transform.parent.gameObject;
+        return colisionParent;
+    }
+
+    private void KnockEnemy(Collision col, GameObject colisionParent)
+    {
+        colisionParent.GetComponent<Enemy>().Kill();
+        col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * PunchForce, col.contacts[0].point, ForceMode.Impulse);
+    }
+
+    private void PlayPunchSound()
+    {
+        AudioSource.clip = PunchSounds[Mathf.RoundToInt(Random.Range(0, PunchSounds.Length - 1))];
+        AudioSource.Play();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Fists"))
