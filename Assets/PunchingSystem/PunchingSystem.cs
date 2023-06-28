@@ -13,84 +13,94 @@ public class PunchingSystem : MonoBehaviour
     public GameObject RightTarget;
     public GameObject RightReadyPosition;
     public GameObject MainCamera;
-    [NonReorderable]
     public Collider[] punchingColliders;
-    public float maxDIstanceRayCast;
-    public float punchingForce = 100f;
-    [Range(0.00001f, 0.00203f)]
-    public float animationSpeed = .2f;
-    public float timeAfterPunchInSeconds = .2f;
+    public float MaxDIstanceRayCast;
+    public float TimeAfterPunchInSeconds = .2f;
+    [Space]
+    public float PunchForce = 100f;
+    [Range(1f, 100f)]
+    public float PunchTerminalSpeed = .2f;
+    public AnimationCurve PunchAcceleration;
+    [Space]
+
+
     private bool punching = false;
 
     void Start()
     {
         MainCamera = MainCamera ?? Camera.main.gameObject;
-        disablePunchingColliders();
-        setArmsReady();
+        DisablePunchingColliders();
+        SetArmsReady();
     }
 
     public void OnFireL(InputValue value)
     {
+
         if (!punching)
-            tryToHit(LeftTarget, LeftReadyPosition);
+            TryToHit(LeftTarget, LeftReadyPosition);
     }
 
     public void OnFireR(InputValue value)
     {
         if (!punching)
-            tryToHit(RightTarget, RightReadyPosition);
+            TryToHit(RightTarget, RightReadyPosition);
     }
 
-    private void tryToHit(GameObject target, GameObject targetReadyPosition)
+    private void TryToHit(GameObject target, GameObject targetReadyPosition)
     {
+
         Vector3 camPosition = MainCamera.transform.position;
         Vector3 camForward = MainCamera.transform.forward;
 
-        RaycastHit[] hit = Physics.RaycastAll(camPosition, camForward, maxDIstanceRayCast);
+        RaycastHit[] hit = Physics.RaycastAll(camPosition, camForward, MaxDIstanceRayCast);
         foreach (RaycastHit hitInfo in hit)
         {
-            StartCoroutine(animatePunch(target, hitInfo.point, targetReadyPosition.transform));
+            StartCoroutine(AnimatePunch(target, hitInfo.point, targetReadyPosition.transform));
         }
     }
 
-    IEnumerator animatePunch(GameObject animatedObj, Vector3 endPosition, Transform readyPosition)
+    IEnumerator AnimatePunch(GameObject animatedObj, Vector3 endPosition, Transform readyPosition)
     {
-        this.punching = true;
+        punching = true;
 
-        enablePunchingColliders();
+        EnablePunchingColliders();
 
-        yield return animateMovement(animatedObj, endPosition);
-        // yield return animateMovement(animatedObj, readyPosition.position);
-        disablePunchingColliders();
-        yield return new WaitForSeconds(timeAfterPunchInSeconds);
+        yield return AnimateMovement(animatedObj, endPosition, PunchTerminalSpeed, PunchAcceleration);
+
+        DisablePunchingColliders();
+
+        yield return new WaitForSeconds(TimeAfterPunchInSeconds);
+
         animatedObj.transform.position = readyPosition.position;
 
-
-        this.punching = false;
+        punching = false;
     }
 
-    private void enablePunchingColliders()
+    private void EnablePunchingColliders()
     {
         foreach (Collider col in punchingColliders)
             col.enabled = true;
     }
-    private void disablePunchingColliders()
+    private void DisablePunchingColliders()
     {
         foreach (Collider col in punchingColliders)
             col.enabled = false;
     }
 
-    IEnumerator animateMovement(GameObject animatedObj, Vector3 endPosition)
+    IEnumerator AnimateMovement(GameObject animatedObj, Vector3 endPosition, float targetSpeed, AnimationCurve accelerationCurve)
     {
         Vector3 originalPosition = animatedObj.transform.position;
         float progressPorcentile = 0f;
-        float distance = Vector3.Distance(animatedObj.transform.position, endPosition);
-        float porcentileIncrement = animationSpeed * 100 / distance;
+        //float distance = Vector3.Distance(animatedObj.transform.position, endPosition);
+        //float startTime = Time.time;
 
         while (progressPorcentile < .999f)
         {
-            progressPorcentile += porcentileIncrement;
+            Debug.Log($"Progress: ${progressPorcentile}");
+            float acceleration = accelerationCurve.Evaluate(progressPorcentile) + 0.1f;
+            progressPorcentile += targetSpeed * Time.deltaTime * acceleration;
             progressPorcentile = Mathf.Clamp(progressPorcentile, 0f, 1f);
+
             Vector3 actualPosition = Vector3.Lerp(originalPosition, endPosition, progressPorcentile);
 
             animatedObj.transform.position = actualPosition;
@@ -106,22 +116,24 @@ public class PunchingSystem : MonoBehaviour
         while (colisionParent.transform.parent != null)
             colisionParent = colisionParent.transform.parent.gameObject;
 
-        if (punching && colisionParent.CompareTag("Enemy") )
+        if (punching && colisionParent.CompareTag("Enemy"))
         {
             Debug.Log("Hitting enemy");
             colisionParent.GetComponent<Enemy>().Kill();
-            col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * punchingForce, col.contacts[0].point, ForceMode.Impulse);
+            col.gameObject.GetComponent<Rigidbody>().AddForceAtPosition((MainCamera.transform.forward) * PunchForce, col.contacts[0].point, ForceMode.Impulse);
         }
 
 
     }
-    private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag("Fists")) {
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Fists"))
+        {
             GameManager.Instance.GameOver();
         }
     }
 
-    private void setArmsReady()
+    private void SetArmsReady()
     {
         LeftTarget.transform.position = LeftReadyPosition.transform.position;
         RightTarget.transform.position = RightReadyPosition.transform.position;

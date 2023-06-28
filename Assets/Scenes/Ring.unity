@@ -1486,8 +1486,48 @@ PrefabInstance:
       objectReference: {fileID: 60889539378096551}
     - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
         type: 3}
+      propertyPath: PunchForce
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
       propertyPath: punchingForce
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: MaxDIstanceRayCast
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchTerminalSpeed
+      value: 0.117
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchAcceleration.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchAcceleration.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchAcceleration.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchAcceleration.m_Curve.Array.data[1].inSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchAcceleration.m_Curve.Array.data[1].outSlope
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
         type: 3}
