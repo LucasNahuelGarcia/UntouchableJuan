@@ -1,32 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
     Animator animator;
     private bool isDead = false;
+    public UnityEvent OnDeath = new UnityEvent();
 
     void Start()
     {
         navMeshAgent = this.GetComponent<NavMeshAgent>();
         animator = this.GetComponent<Animator>();
-        setupRigidbodies();
+        SetupRigidbodies();
     }
     void Update()
     {
         animator.SetBool("Jumping", navMeshAgent.isOnOffMeshLink);
-        animator.SetFloat("Speed", this.navMeshAgent.velocity.magnitude);
+        animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
     }
+    private void CheckHittingRotation()
+    {
+        if (navMeshAgent.velocity.magnitude < .01f)
+        {
+            Vector3 mainCameraPosition = Camera.main.transform.position;
+            Vector3 targetRotation = new Vector3(mainCameraPosition.x, transform.position.y, mainCameraPosition.z);
+            transform.LookAt(targetRotation);
+        }
+    }
+
     void FixedUpdate()
     {
+        CheckHittingRotation();
         if (navMeshAgent.enabled)
             navMeshAgent.destination = Camera.main.transform.position;
     }
 
-    private void setupRigidbodies()
+    private void SetupRigidbodies()
     {
         Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rigidbody in rigidbodies)
@@ -38,8 +52,8 @@ public class Enemy : MonoBehaviour
         if (!isDead)
         {
             isDead = true;
-            this.GetComponent<Animator>().enabled = false;
-            this.GetComponent<NavMeshAgent>().enabled = false;
+            GetComponent<Animator>().enabled = false;
+            GetComponent<NavMeshAgent>().enabled = false;
             Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
             foreach (Rigidbody rigidbody in rigidbodies)
             {
@@ -50,7 +64,9 @@ public class Enemy : MonoBehaviour
 
             StartCoroutine(changeLayer(0.2f));
 
-            GameManager.Instance.EnemyCount++;
+            GameManager.Instance.IncreaseEnemyCount();
+            OnDeath.Invoke();
+            enabled = false;
         }
     }
 

@@ -27,11 +27,6 @@ namespace StarterAssets
             MoveInput(value.Get<Vector2>());
         }
 
-        public void OnQuit(InputValue value)
-        {
-            GameManager.Instance.QuitGame();
-        }
-
         public void OnLook(InputValue value)
         {
             if (cursorInputForLook)
