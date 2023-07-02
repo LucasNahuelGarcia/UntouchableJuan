@@ -2,7 +2,7 @@
     "name": "StarterAssets",
     "maps": [
         {
-            "name": "Player",
+            "name": "Gameplay",
             "id": "f62a4b92-ef5e-4175-8f4c-c9075429d32c",
             "actions": [
                 {
@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "Press(behavior=2)",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "0c20a8a4-5360-41d3-9362-4e2c033e3894",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -274,8 +283,75 @@
                     "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KeyboardMouse",
                     "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0e8f170-9bc4-4419-adde-a043a4f1664c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PauseMenu",
+            "id": "1f9cd52d-5d42-46f3-bd57-78bd50a68691",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "74eaa8c3-6204-4672-83c0-765d5f734cb1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "92997d5d-9abb-4d92-b389-2a7ef6f7a70b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "aa0b7a60-04c4-4d00-95b3-5e1e666588b1",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "eed4f124-951e-414a-8069-cb1bef81012d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "62c72993-a992-48aa-a768-b147bcd3bd0a",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

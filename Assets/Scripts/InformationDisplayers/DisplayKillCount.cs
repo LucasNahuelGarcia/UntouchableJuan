@@ -12,16 +12,16 @@ namespace InformationDisplayers
         private void OnEnable()
         {
             m_Text ??= GetComponent<TMP_Text>();
-            GameManager.Instance.OnEnemyCountChanged.AddListener(UpdateCounter);
+            GameManager.Instance?.OnEnemyCountChanged.AddListener(UpdateCounter);
+            UpdateCounter(GameManager.Instance.EnemyCount);
         }
         private void OnDisable()
         {
-            GameManager.Instance.OnEnemyCountChanged.RemoveListener(UpdateCounter);
+            GameManager.Instance?.OnEnemyCountChanged.RemoveListener(UpdateCounter);
         }
 
         public void UpdateCounter(int value)
         {
-            Debug.Log("Counter updated");
             m_Text.text = value.ToString();
         }
     }
