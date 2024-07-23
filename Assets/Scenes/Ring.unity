@@ -276,7 +276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &156987504
 Transform:
   m_ObjectHideFlags: 0
@@ -5339,6 +5339,41 @@ PrefabInstance:
       propertyPath: MainCamera
       value: 
       objectReference: {fileID: 60889539378096551}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1c3d9470260b4b4da358c29e86c0a14, type: 3}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1c3d9470260b4b4da358c29e86c0a14, type: 3}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1c3d9470260b4b4da358c29e86c0a14, type: 3}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1c3d9470260b4b4da358c29e86c0a14, type: 3}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchSounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1c3d9470260b4b4da358c29e86c0a14, type: 3}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchSounds.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1c3d9470260b4b4da358c29e86c0a14, type: 3}
+    - target: {fileID: 8409414921396814542, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
+        type: 3}
+      propertyPath: PunchSounds.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: e1c3d9470260b4b4da358c29e86c0a14, type: 3}
     - target: {fileID: 8616685848737228372, guid: c5efc39a8aaf6e64ea40e9ad573e9b47,
         type: 3}
       propertyPath: m_Name
